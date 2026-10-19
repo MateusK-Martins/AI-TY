@@ -71,9 +71,12 @@ class Environment:
         if path.is_absolute() or ".." in path.parts:
             return None
 
-        # Action paths are already relative to shared/.
+        # Actions normally use paths relative to shared/. Accept a single
+        # leading shared/ prefix as a harmless normalization for model output.
         if path.parts and path.parts[0] == "shared":
-            return None
+            path = Path(*path.parts[1:])
+            if not path.parts:
+                return None
 
         result = (self.shared / path).resolve()
 
