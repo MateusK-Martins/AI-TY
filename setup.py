@@ -3,7 +3,7 @@ from agent import Agent
 from environment import Environment
 
 URL = "http://127.0.0.1:11434/api/chat"
-MODEL = "yi:6b"
+MODEL = "llama3.1:8b-instruct-q4_K_M"
 
 roles = {
     "Ash": "keeper of the Copper Lantern tavern",
