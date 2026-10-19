@@ -1,0 +1,26 @@
+# Dependencies for the RWKV-Infer backend (Linux + NVIDIA).
+# Based on OpenMOSE/RWKV-Infer requirements_fla.txt at:
+# 5baa49050cb0696f2a280ae1740e8abf11a83c11
+# Upstream requires Python >=3.12 and PyTorch >=2.7.
+# Install PyTorch FIRST, then install this file.
+# Torch/TorchAO are pinned for the legacy floatx API used by this backend.
+# Other dependencies remain upstream defaults; this is not a tested lockfile.
+# RWKV-Infer source code and model weights are separate downloads.
+
+torch==2.7.1
+ninja
+pandas
+fastapi
+starlette
+uvicorn
+numpy
+triton
+bitsandbytes
+einops
+transformers
+torchao==0.12.0
+safetensors
+rwkv-fla
+hqq
+gemlite
+requests
