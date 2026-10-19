@@ -77,10 +77,10 @@ class Dashboard(App):
 
         with Horizontal():
             with ScrollableContainer(id="main"):
-                yield Static("No thoughts yet", id="thought")
-                yield Static("No memory yet", id="memory")
-                yield Static("No action yet", id="action")
-                yield Static("No receipt yet", id="receipt")
+                yield Static("[bold]THOUGHTS[/bold]\nNo thoughts yet", id="thought")
+                yield Static("[bold]MEMORY[/bold]\nNo memory yet", id="memory")
+                yield Static("[bold]ACTION[/bold]\nNo action yet", id="action")
+                yield Static("[bold]RECEIPT[/bold]\nNo receipt yet", id="receipt")
 
             with Vertical(id="history_panel"):
                 yield Button("Following live", id="follow-live")
@@ -130,15 +130,21 @@ class Dashboard(App):
             self.show_event_details(self.events[event.list_view.index])
 
     def show_event_details(self, event):
-        self.query_one("#thought", Static).update(event.get("thoughts", ""))
-        self.query_one("#memory", Static).update(event.get("memory", "No memory recorded."))
+        self.query_one("#thought", Static).update(
+            f"[bold]THOUGHTS[/bold]\n{event.get('thoughts', 'No thoughts recorded.')}"
+        )
+        self.query_one("#memory", Static).update(
+            f"[bold]MEMORY[/bold]\n{event.get('memory', 'No memory recorded.')}"
+        )
         self.query_one("#action", Static).update(
-            json.dumps(event["action"], indent=2, ensure_ascii=False)
+            "[bold]ACTION[/bold]\n"
+            + json.dumps(event["action"], indent=2, ensure_ascii=False)
         )
         receipt = event["receipt"]
         status = "OK" if receipt.get("ok") else "FAILED"
         self.query_one("#receipt", Static).update(
-            f"{status}\n{receipt.get('result', receipt.get('error', ''))}"
+            f"[bold]RECEIPT — Status:[/bold] {status}\n"
+            f"{receipt.get('result', receipt.get('error', ''))}"
         )
 
     def show_full_history(self):
@@ -207,24 +213,29 @@ class Dashboard(App):
 
             self.events.append(event)
             if self.follow_live:
-                thought.update(event.get("thoughts", "No thoughts recorded."))
-                memory.update(event.get("memory", "No memory recorded."))
+                thought.update(
+                    f"[bold]THOUGHTS — Step {event['step']} — {event['agent']}[/bold]\n"
+                    f"{event.get('thoughts', 'No thoughts recorded.')}"
+                )
+                memory.update(
+                    f"[bold]MEMORY — {event['agent']}[/bold]\n"
+                    f"{event.get('memory', 'No memory recorded.')}"
+                )
             receipt_data = event["receipt"]
             status = "OK" if receipt_data.get("ok") else "FAILED"
             message = receipt_data.get("result", receipt_data.get("error", ""))
 
             if self.follow_live:
                 action.update(
-                f"[bold cyan]Step {event['step']} — "
-                f"{event['agent']}[/bold cyan]\n\n"
-                f"[bold]Action[/bold]\n"
+                f"[bold]ACTION — Step {event['step']} — "
+                f"{event['agent']}[/bold]\n\n"
                 f"{action_json}"
                 )
 
             color = "green" if receipt_data.get("ok") else "red"
             if self.follow_live:
                 receipt.update(
-                    f"[bold]Status:[/bold] [{color}]{status}[/{color}]\n{message}"
+                    f"[bold]RECEIPT — Status:[/bold] [{color}]{status}[/{color}]\n{message}"
                 )
 
             if event["action"].get("action").lower() == "read":
@@ -242,16 +253,15 @@ class Dashboard(App):
         elif event["type"] == "thinking":
             if self.follow_live:
                 self.query_one("#thought", Static).update(
-                    f"[bold cyan]Step {event['step']} — "
-                    f"{event['agent']}[/bold cyan]\n\n"
-                    f"[bold]Thinking...[/bold]\n"
+                    f"[bold]THOUGHTS — Step {event['step']} — "
+                    f"{event['agent']}[/bold]\n\n"
+                    f"Thinking...\n"
                 )
 
         elif event["type"] == "thoughts":
             if self.follow_live:
                 self.query_one("#thought", Static).update(
-                    f"[bold cyan]Step {event['step']} — "
-                    f"{event['agent']}[/bold cyan]\n\n"
-                    f"[bold]Thoughts[/bold]\n"
+                    f"[bold]THOUGHTS — Step {event['step']} — "
+                    f"{event['agent']}[/bold]\n\n"
                     f"{event['thoughts']}"
                 )
