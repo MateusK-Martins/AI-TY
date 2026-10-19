@@ -50,7 +50,8 @@ class Dashboard(App):
     #memory {
         border: solid blue;
         padding: 1;
-        min-height: 8;
+        height: 12;
+        overflow-y: scroll;
     }
     """
 
@@ -78,7 +79,8 @@ class Dashboard(App):
         with Horizontal():
             with ScrollableContainer(id="main"):
                 yield Static("[bold]THOUGHTS[/bold]\nNo thoughts yet", id="thought")
-                yield Static("[bold]MEMORY[/bold]\nNo memory yet", id="memory")
+                with ScrollableContainer(id="memory"):
+                    yield Static("[bold]MEMORY[/bold]\nNo memory yet", id="memory-content")
                 yield Static("[bold]ACTION[/bold]\nNo action yet", id="action")
                 yield Static("[bold]RECEIPT[/bold]\nNo receipt yet", id="receipt")
 
@@ -133,7 +135,7 @@ class Dashboard(App):
         self.query_one("#thought", Static).update(
             f"[bold]THOUGHTS[/bold]\n{event.get('thoughts', 'No thoughts recorded.')}"
         )
-        self.query_one("#memory", Static).update(
+        self.query_one("#memory-content", Static).update(
             f"[bold]MEMORY[/bold]\n{event.get('memory', 'No memory recorded.')}"
         )
         self.query_one("#action", Static).update(
@@ -202,7 +204,7 @@ class Dashboard(App):
             action = self.query_one("#action", Static)
             receipt = self.query_one("#receipt", Static)
             thought = self.query_one("#thought", Static)
-            memory = self.query_one("#memory", Static)
+            memory = self.query_one("#memory-content", Static)
             history = self.query_one("#history", ListView)
 
             action_json = json.dumps(
