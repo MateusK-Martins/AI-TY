@@ -50,7 +50,7 @@ class Dashboard(App):
     #memory {
         border: solid blue;
         padding: 1;
-        height: 12;
+        height: 21;
         overflow-y: scroll;
     }
     """
