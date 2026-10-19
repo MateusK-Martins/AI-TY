@@ -49,6 +49,8 @@ environment = Environment(
         Path("instruction/basic_rules.md").read_text(encoding="utf-8")
         + "\n"
         + Path("instruction/world.md").read_text(encoding="utf-8")
+        + "\n"
+        + Path("kingdom.md").read_text(encoding="utf-8")
     ),
     thinking_instruction="<Think about what happened, reflect and make a plan on the following actions",
     action_instruction=f"{action_taking}\r\n<Take an action>",

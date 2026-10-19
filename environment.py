@@ -267,11 +267,13 @@ class Environment:
         return {"ok": False, "error": "Unsupported action"}
             
     def run(self):
+        agent_turns = {name: 0 for name in self.agents}
 
         for i in range(0, self.steps):
             index = i % len(self.agents)
 
             agent = list(self.agents.values())[index]
+            agent_turns[agent.name] += 1
             memory_snapshot = agent.memory
 
             yield {
@@ -306,7 +308,7 @@ class Environment:
                 )
                 print("Receipt:", json.dumps(receipt, indent=2))
 
-                if (i + 1) % self.compress_interval == 0:
+                if agent_turns[agent.name] % self.compress_interval == 0:
                     self.compressor.overwrite_memory(agent.memory)
                     compressed_memory = self.compressor.call("Compress.", self.compress_pedict)
                     self.compressor.overwrite_memory("")
