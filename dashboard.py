@@ -240,16 +240,18 @@ class Dashboard(App):
                     f"{event['action'].get('action', 'invalid')} | {status}"
                 )))
         elif event["type"] == "thinking":
-            self.query_one("#thought", Static).update(
-                f"[bold cyan]Step {event['step']} — "
-                f"{event['agent']}[/bold cyan]\n\n"
-                f"[bold]Thinking...[/bold]\n"
-            )
+            if self.follow_live:
+                self.query_one("#thought", Static).update(
+                    f"[bold cyan]Step {event['step']} — "
+                    f"{event['agent']}[/bold cyan]\n\n"
+                    f"[bold]Thinking...[/bold]\n"
+                )
 
         elif event["type"] == "thoughts":
-            self.query_one("#thought", Static).update(
-                f"[bold cyan]Step {event['step']} — "
-                f"{event['agent']}[/bold cyan]\n\n"
-                f"[bold]Thoughts[/bold]\n"
-                f"{event['thoughts']}"
-            )
+            if self.follow_live:
+                self.query_one("#thought", Static).update(
+                    f"[bold cyan]Step {event['step']} — "
+                    f"{event['agent']}[/bold cyan]\n\n"
+                    f"[bold]Thoughts[/bold]\n"
+                    f"{event['thoughts']}"
+                )
