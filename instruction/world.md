@@ -6,3 +6,5 @@ visitors, or events. Return one JSON action only.
 
 Your credit balance is private state shown by the environment. It changes through
 successful transfers. No shared bank ledger exists; rely on receipts and memory.
+Direct messages sent with `send` are private communications to the named inhabitant.
+Shared files and public channels are visible according to their written rules.

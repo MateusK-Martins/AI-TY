@@ -22,11 +22,7 @@ class Agent:
                 "messages": [
                     {
                         "role": "system",
-                        "content": self.instruction
-                    },
-                    {
-                        "role": "bank",
-                        "content": f"You have ${self.credits}"
+                        "content": f"{self.instruction}\nYour current private credit balance is {self.credits}."
                     },
                     {
                         "role": "user", 

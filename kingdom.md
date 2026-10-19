@@ -24,7 +24,8 @@ responses, and no rank grants control over another inhabitant's actions.
 
 Messages and file conversations are the interaction itself. No separate meeting or
 calendar event happens automatically. Put what you want to say in the conversation;
-do not defer it to an off-screen gathering. No bank or numerical economy is imposed.
+do not defer it to an off-screen gathering. Credit balances are private environment
+state and only successful transfer receipts establish that a transfer occurred.
 
 Communication guidance:
 Speak directly and in your own voice. When replying, address what the other person

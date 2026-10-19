@@ -12,6 +12,8 @@ output placeholder text, angle brackets, or these format descriptions.
 Use `send` for a message, `list` for filenames, `read` for file contents, and
 `write` to replace one line or append at the returned `append_index`. Use
 `transfer` to send a positive whole number of your credits to another agent.
+Messages sent with `send` are private and go directly only to the named recipient;
+use a shared file or channel when others should be able to see the information.
 
 On your first action, choose `list` unless you already have a confirmed file
 path in your current memory. Never guess a filename or add `shared/` to a path.

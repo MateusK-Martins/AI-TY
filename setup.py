@@ -18,7 +18,6 @@ roles = {
     "Joahn": "Keeper of the Seal",
     "Marcos": "keeper of the Veyr Press",
     "Lian": "independent inhabitant",
-    "Bank": "the bank of Veyr; report transfers accurately",
 }
 channel_memory = (
     "A public channel exists at channels/town[all].md. You were going to the "
@@ -26,7 +25,7 @@ channel_memory = (
 )
 agents = {
     name.casefold(): Agent(name=name, instruction=f"You are {name}, {role}.", memory=channel_memory,
-                           url=URL, model=MODEL, credits=0 if name == "Bank" else 100)
+                           url=URL, model=MODEL, credits=100)
     for name, role in roles.items()
 }
 
@@ -54,7 +53,7 @@ environment = Environment(
     thinking_instruction="<Think about what happened, reflect and make a plan on the following actions",
     action_instruction=f"{action_taking}\r\n<Take an action>",
     compressor=compressor,
-    compress_interval=5,
+    compress_interval=10,
     compress_pedict=500,
     thinking_predict=150,
     action_predict=100

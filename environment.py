@@ -317,6 +317,7 @@ class Environment:
                     "step": i + 1,
                     "agent": agent.name,
                     "thoughts": thoughts,
+                    "memory": agent.memory,
                     "action": data,
                     "receipt": receipt,
                 }

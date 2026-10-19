@@ -1,7 +1,8 @@
 import json
+from pathlib import Path
 
 from textual.app import App, ComposeResult
-from textual.containers import Horizontal, Vertical
+from textual.containers import Horizontal, ScrollableContainer, Vertical
 from textual.widgets import Header, Footer, Static, Button, ListView, ListItem, Label
 from textual import work
 from environment import Environment
@@ -11,6 +12,7 @@ class Dashboard(App):
     #main {
         width: 70%;
         padding: 1 2;
+        overflow-y: scroll;
     }
 
     #history_panel {
@@ -28,16 +30,27 @@ class Dashboard(App):
         margin-bottom: 1;
     }
 
+    #thought {
+        border: solid magenta;
+        padding: 1;
+        min-height: 8;
+    }
+
     #action {
-        height: 1fr;
         border: solid green;
         padding: 1;
+        min-height: 8;
     }
 
     #receipt {
-        height: 1fr;
         border: solid yellow;
+        min-height: 5;
+    }
+
+    #memory {
+        border: solid blue;
         padding: 1;
+        min-height: 8;
     }
     """
 
@@ -63,14 +76,16 @@ class Dashboard(App):
         yield Header()
 
         with Horizontal():
-            with Vertical(id="main"):
+            with ScrollableContainer(id="main"):
                 yield Static("No thoughts yet", id="thought")
+                yield Static("No memory yet", id="memory")
                 yield Static("No action yet", id="action")
                 yield Static("No receipt yet", id="receipt")
 
             with Vertical(id="history_panel"):
                 yield Button("Following live", id="follow-live")
                 yield Button("Show full history", id="full-history")
+                yield Button("Export events JSON", id="export-events")
                 yield ListView(
                     id="history",
                 )
@@ -81,6 +96,9 @@ class Dashboard(App):
             self.follow_live = True
             if self.events:
                 self.show_event_details(self.events[-1])
+            return
+        if event.button.id == "export-events":
+            self.export_events()
             return
         if event.button.id != "full-history":
             return
@@ -99,6 +117,12 @@ class Dashboard(App):
         else:
             self.show_compact_history()
 
+    def export_events(self):
+        path = Path("runs/events.json")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(self.events, indent=2, ensure_ascii=False), encoding="utf-8")
+        self.query_one("#receipt", Static).update(f"Exported {len(self.events)} events to {path}")
+
     def on_list_view_selected(self, event: ListView.Selected):
         if event.list_view.index is not None:
             self.follow_live = False
@@ -107,6 +131,7 @@ class Dashboard(App):
 
     def show_event_details(self, event):
         self.query_one("#thought", Static).update(event.get("thoughts", ""))
+        self.query_one("#memory", Static).update(event.get("memory", "No memory recorded."))
         self.query_one("#action", Static).update(
             json.dumps(event["action"], indent=2, ensure_ascii=False)
         )
@@ -171,6 +196,7 @@ class Dashboard(App):
             action = self.query_one("#action", Static)
             receipt = self.query_one("#receipt", Static)
             thought = self.query_one("#thought", Static)
+            memory = self.query_one("#memory", Static)
             history = self.query_one("#history", ListView)
 
             action_json = json.dumps(
@@ -182,6 +208,7 @@ class Dashboard(App):
             self.events.append(event)
             if self.follow_live:
                 thought.update(event.get("thoughts", "No thoughts recorded."))
+                memory.update(event.get("memory", "No memory recorded."))
             receipt_data = event["receipt"]
             status = "OK" if receipt_data.get("ok") else "FAILED"
             message = receipt_data.get("result", receipt_data.get("error", ""))
@@ -213,22 +240,14 @@ class Dashboard(App):
                     f"{event['action'].get('action', 'invalid')} | {status}"
                 )))
         elif event["type"] == "thinking":
-            action = self.query_one("#action", Static)
-            receipt = self.query_one("#receipt", Static)
-            history = self.query_one("#history", ListView)
-
-            action.update(
+            self.query_one("#thought", Static).update(
                 f"[bold cyan]Step {event['step']} — "
                 f"{event['agent']}[/bold cyan]\n\n"
                 f"[bold]Thinking...[/bold]\n"
             )
 
         elif event["type"] == "thoughts":
-            action = self.query_one("#action", Static)
-            receipt = self.query_one("#receipt", Static)
-            history = self.query_one("#history", RichLog)
-
-            action.update(
+            self.query_one("#thought", Static).update(
                 f"[bold cyan]Step {event['step']} — "
                 f"{event['agent']}[/bold cyan]\n\n"
                 f"[bold]Thoughts[/bold]\n"
