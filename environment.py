@@ -267,7 +267,7 @@ class Environment:
         return {"ok": False, "error": "Unsupported action"}
             
     def run(self):
-        agent_turns = {name: 0 for name in self.agents}
+        agent_turns = {agent.name: 0 for agent in self.agents.values()}
 
         for i in range(0, self.steps):
             index = i % len(self.agents)
