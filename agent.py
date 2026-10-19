@@ -26,7 +26,7 @@ class Agent:
                     },
                     {
                         "role": "user", 
-                        "content": f"<memory>{self.memory}<memory>\r\n{message}"
+                        "content": f"<memory>{self.memory}</memory>\r\n{message}"
                     }
                 ],
                 "stream": False,

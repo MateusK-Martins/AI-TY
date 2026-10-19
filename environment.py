@@ -5,6 +5,22 @@ from agent import Agent
 
 class Environment:
 
+    @staticmethod
+    def parse_action_response(response: str) -> dict:
+        """Extract one JSON object from a model response."""
+        if not isinstance(response, str):
+            return {}
+        decoder = json.JSONDecoder()
+        for position, character in enumerate(response):
+            if character != "{":
+                continue
+            try:
+                value, _ = decoder.raw_decode(response[position:])
+            except json.JSONDecodeError:
+                continue
+            return value if isinstance(value, dict) else {}
+        return {}
+
     def __init__(
             self, 
             shared_path: Path,
@@ -287,11 +303,7 @@ class Environment:
 
             action = agent.call(self.action_instruction, self.action_predict)
 
-            data = {}
-            try:
-                data = json.loads(action)
-            except json.JSONDecodeError:
-                pass
+            data = self.parse_action_response(action)
 
             valid_action = self.validate_action(agent, data)
 
