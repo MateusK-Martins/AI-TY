@@ -53,5 +53,5 @@ environment = Environment(
     compress_threshold=6000,
     compress_pedict=500,
     thinking_predict=150,
-    action_predict=100
+    action_predict=180
 )

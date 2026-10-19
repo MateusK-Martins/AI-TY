@@ -297,6 +297,7 @@ class Environment:
             index = i % len(self.agents)
 
             agent = list(self.agents.values())[index]
+            self.compress_if_needed(agent)
             memory_snapshot = agent.memory
 
             yield {
@@ -307,7 +308,6 @@ class Environment:
 
             thoughts = agent.call(self.thinking_instruction, self.thinking_predict)
             agent.append_memory(thoughts)
-            self.compress_if_needed(agent)
 
             action = agent.call(self.action_instruction, self.action_predict)
 

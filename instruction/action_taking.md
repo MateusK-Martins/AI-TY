@@ -1,8 +1,13 @@
-Choose exactly one action and return exactly one JSON object. Do not write
-explanations, Markdown fences, comments, or more than one object.
+Your reasoning has already happened in the preceding thinking step. Now execute
+one decision: choose exactly one action and return exactly one complete JSON
+object. Do not continue reasoning. Do not write explanations, Markdown fences,
+comments, or more than one object.
 
 Every value must be a real value you choose. The words in these examples describe
 the type of value; do not copy them literally.
+
+The action name must be exactly one of `send`, `transfer`, `list`, `read`, or
+`write`. Never invent names such as `edit`, `append`, or `create`.
 
 {"action":"send","to":"the recipient's exact name","text":"the message"}
 {"action":"transfer","to":"the recipient's exact name","amount":5}
