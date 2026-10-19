@@ -18,10 +18,14 @@ roles = {
     "Joahn": "Keeper of the Seal",
     "Marcos": "keeper of the Veyr Press",
     "Lian": "independent inhabitant",
-    "Bank": "bank of Veyr; report transfers accurately",
+    "Bank": "the bank of Veyr; report transfers accurately",
 }
+channel_memory = (
+    "A public channel exists at channels/town[all].md. You were going to the "
+    "channel to get to know the other inhabitants. Read it before replying."
+)
 agents = {
-    name.casefold(): Agent(name=name, instruction=f"You are {name}, {role}.", memory="",
+    name.casefold(): Agent(name=name, instruction=f"You are {name}, {role}.", memory=channel_memory,
                            url=URL, model=MODEL, credits=0 if name == "Bank" else 100)
     for name, role in roles.items()
 }

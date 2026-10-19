@@ -1,4 +1,3 @@
-from textual.worker import Worker
 from setup import environment
 from dashboard import Dashboard
 

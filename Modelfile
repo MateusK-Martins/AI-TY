@@ -1,6 +1,6 @@
-FROM hf.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF:Q4_K_M
+FROM llama3.1:8b-instruct-q4_K_M
 
-# This Instruct variant uses ChatML without a thinking prefix.
+# The local Ollama model already supplies the chat template.
 TEMPLATE """{{ if .System }}<|im_start|>system
 {{ .System }}<|im_end|>
 {{ end }}{{ range .Messages }}<|im_start|>{{ .Role }}

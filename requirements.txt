@@ -24,3 +24,4 @@ rwkv-fla
 hqq
 gemlite
 requests
+textual>=0.50
