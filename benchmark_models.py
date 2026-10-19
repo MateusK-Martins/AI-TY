@@ -16,6 +16,8 @@ MODELS = [
     "pedrolucas/smollm3:3b-q4_k_m",
     "yi:6b",
     "hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF:Q4_K_M",
+    # X tested: structurally valid output, but invented unsupported actions.
+    "hf.co/SC117/LFM2.5-VL-3B-Uncensored-GGUF:Q4_K_M",
 ]
 PROMPTS = [
     'Return exactly one JSON action: {"action":"list","start":0,"limit":20}',
