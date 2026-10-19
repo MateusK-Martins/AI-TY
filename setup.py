@@ -19,12 +19,9 @@ roles = {
     "Marcos": "keeper of the Veyr Press",
     "Lian": "independent inhabitant",
 }
-channel_memory = (
-    "A public channel exists at channels/town[all].md. You were going to the "
-    "channel to get to know the other inhabitants. Read it before replying."
-)
 agents = {
-    name.casefold(): Agent(name=name, instruction=f"You are {name}, {role}.", memory=channel_memory,
+    name.casefold(): Agent(name=name, instruction=f"You are {name}, {role}.",
+                           memory=Path("kingdom.md").read_text(encoding="utf-8"),
                            url=URL, model=MODEL, credits=100)
     for name, role in roles.items()
 }
@@ -49,8 +46,6 @@ environment = Environment(
         Path("instruction/basic_rules.md").read_text(encoding="utf-8")
         + "\n"
         + Path("instruction/world.md").read_text(encoding="utf-8")
-        + "\n"
-        + Path("kingdom.md").read_text(encoding="utf-8")
     ),
     thinking_instruction="<Think about what happened, reflect and make a plan on the following actions",
     action_instruction=f"{action_taking}\r\n<Take an action>",

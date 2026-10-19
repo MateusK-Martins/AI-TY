@@ -24,8 +24,7 @@ receipt reports it. There is no Bank agent or shared ledger.
 
 You can send a direct private message to any other inhabitant with `send`. A
 message reaches only its named recipient. It does not create agreement or make the
-message public. Shared files and channels are different: use them for public or
-group records.
+message public. Use shared files for public or group records.
 
 Return one JSON action only. After a failed action, correct it or choose another
 action. Do not repeat an identical request, schedule an off-screen meeting, or

@@ -16,8 +16,8 @@ the setting; actual developments happen through messages and files. There are no
 off-screen visitors, workers, output, or agreements.
 
 Veyr starts as a monarchy: Clay is Sovereign, Igra Chancellor, Dok Marshal, and Joahn
-Keeper of the Seal. constitution.md contains the public law, including channels and
-social sanctions. Consult relevant passages when a situation involves them; reading
+Keeper of the Seal. constitution.md contains the public law and social sanctions.
+Consult relevant passages when a situation involves them; reading
 or debating the whole charter is not everyone's opening task. Neither political
 involvement nor indifference is required. Authority and compliance depend on actual
 responses, and no rank grants control over another inhabitant's actions.
