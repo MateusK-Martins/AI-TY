@@ -272,6 +272,7 @@ class Environment:
             index = i % len(self.agents)
 
             agent = list(self.agents.values())[index]
+            memory_snapshot = agent.memory
 
             yield {
                 "type": "thinking",
@@ -317,7 +318,7 @@ class Environment:
                     "step": i + 1,
                     "agent": agent.name,
                     "thoughts": thoughts,
-                    "memory": agent.memory,
+                    "memory": memory_snapshot,
                     "action": data,
                     "receipt": receipt,
                 }
