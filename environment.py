@@ -324,6 +324,21 @@ class Environment:
                     "action": data,
                     "receipt": receipt,
                 }
+            else:
+                receipt = {
+                    "ok": False,
+                    "error": "The model response did not contain a valid action.",
+                }
+                agent.append_memory(f"Invalid action response: {action}")
+                yield {
+                    "type": "action",
+                    "step": i + 1,
+                    "agent": agent.name,
+                    "thoughts": thoughts,
+                    "memory": memory_snapshot,
+                    "action": data,
+                    "receipt": receipt,
+                }
 
 
                             

@@ -238,7 +238,8 @@ class Dashboard(App):
                     f"[bold]RECEIPT — Status:[/bold] [{color}]{status}[/{color}]\n{message}"
                 )
 
-            if event["action"].get("action").lower() == "read":
+            action_name = event["action"].get("action")
+            if isinstance(action_name, str) and action_name.lower() == "read":
                 history.append(ListItem(Label(
                     f"Step {event['step']} | "
                     f"{event['agent']} | "
