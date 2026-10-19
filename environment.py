@@ -29,7 +29,7 @@ class Environment:
             thinking_instruction: str, 
             action_instruction: str, 
             compressor: Agent,
-            compress_interval: int,
+            compress_threshold: int,
             compress_pedict: int,
             thinking_predict: int,
             action_predict: int,
@@ -41,7 +41,7 @@ class Environment:
         self.thinking_instruction = thinking_instruction
         self.action_instruction = action_instruction
         self.standard_instruction = standard_instruction
-        self.compress_interval = compress_interval
+        self.compress_threshold = compress_threshold
         self.compress_pedict = compress_pedict
         self.thinking_predict = thinking_predict
         self.action_predict = action_predict
@@ -54,6 +54,16 @@ class Environment:
 
     def set_steps(self, steps: int):
         self.steps = steps
+
+    def compress_if_needed(self, agent: Agent):
+        if len(agent.memory) <= self.compress_threshold:
+            return False
+
+        self.compressor.overwrite_memory(agent.memory)
+        compressed_memory = self.compressor.call("Compress.", self.compress_pedict)
+        self.compressor.overwrite_memory("")
+        agent.overwrite_memory(compressed_memory)
+        return True
 
     def get_path(self, filename):
         path = Path(filename)
@@ -283,13 +293,10 @@ class Environment:
         return {"ok": False, "error": "Unsupported action"}
             
     def run(self):
-        agent_turns = {agent.name: 0 for agent in self.agents.values()}
-
         for i in range(0, self.steps):
             index = i % len(self.agents)
 
             agent = list(self.agents.values())[index]
-            agent_turns[agent.name] += 1
             memory_snapshot = agent.memory
 
             yield {
@@ -300,6 +307,7 @@ class Environment:
 
             thoughts = agent.call(self.thinking_instruction, self.thinking_predict)
             agent.append_memory(thoughts)
+            self.compress_if_needed(agent)
 
             action = agent.call(self.action_instruction, self.action_predict)
 
@@ -320,12 +328,7 @@ class Environment:
                 )
                 print("Receipt:", json.dumps(receipt, indent=2))
 
-                if agent_turns[agent.name] % self.compress_interval == 0:
-                    self.compressor.overwrite_memory(agent.memory)
-                    compressed_memory = self.compressor.call("Compress.", self.compress_pedict)
-                    self.compressor.overwrite_memory("")
-
-                    agent.overwrite_memory(compressed_memory)
+                self.compress_if_needed(agent)
 
                 yield {
                     "type": "action",

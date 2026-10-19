@@ -48,9 +48,9 @@ environment = Environment(
         + Path("instruction/world.md").read_text(encoding="utf-8")
     ),
     thinking_instruction="<Think about what happened, reflect and make a plan on the following actions",
-    action_instruction=f"{action_taking}\r\n<Take an action>",
+    action_instruction=f"{action_taking}\r\n<Take an action based on your thoughts and plans>",
     compressor=compressor,
-    compress_interval=10,
+    compress_threshold=6000,
     compress_pedict=500,
     thinking_predict=150,
     action_predict=100
